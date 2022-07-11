@@ -1,4 +1,4 @@
-import { objectType, extendType } from 'nexus';
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
 import { NexusGenObjects } from '../../nexus-typegen';
 
 export const Link = objectType({
@@ -30,6 +30,88 @@ export const LinkQuery = extendType({
       type: 'Link',
       resolve(parent, args, context, info) {
         return links;
+      }
+    });
+  }
+});
+
+export const LinkMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('post', {
+      type: 'Link',
+      args: {
+        description: nonNull(stringArg()),
+        url: nonNull(stringArg())
+      },
+
+      resolve: (parent, args, context) => {
+        const { description, url } = args;
+        const idCount = links.length + 1;
+
+        const link = {
+          id: idCount,
+          description,
+          url
+        };
+
+        links.push(link);
+
+        return link;
+      }
+    });
+  }
+});
+
+export const LinkUpdate = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('update', {
+      type: 'Link',
+      args: {
+        id: nonNull(intArg()),
+        description: stringArg(),
+        url: stringArg()
+      },
+      resolve: (parent, { id: targetId, description, url }, context) => {
+        const linkIds = links.length + 1;
+        if (linkIds < targetId) {
+          return Error(`id ${targetId} is not exist in Link data`);
+        } else if (!!links.filter((x) => x.id === targetId).length) {
+          return Error(`id ${targetId} is not exist in Link data`);
+        }
+
+        const changeLink = {
+          id: targetId,
+          url: url || '',
+          description: description || ''
+        };
+
+        links.splice(targetId - 1, 1, changeLink);
+
+        return links[targetId - 1];
+      }
+    });
+  }
+});
+
+export const LinkDelete = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('delete', {
+      type: 'Link',
+      args: {
+        id: nonNull(intArg())
+      },
+      resolve: (parent, { id: targetId }, context) => {
+        console.log(targetId);
+        const target = links.filter((x) => x.id === targetId)[0];
+        console.log(target);
+        if (!links.filter((x) => x.id === targetId).length) {
+          return Error(`id ${targetId} is not exist in Link data`);
+        }
+
+        return links.pop(links.indexOf(target));
       }
     });
   }
