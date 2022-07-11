@@ -6,6 +6,8 @@
 
 - `npm install --save-dev typescript ts-node-dev`
 - `npm install apollo-server graphql nexus`
+- `npm install prisma@^3.5.0 --save-dev`
+- `npm install @prisma/client@^3.5.0`
 
 ## add tsconfig.json file
 
@@ -30,3 +32,8 @@
   }
 }
 ```
+
+## prisma command
+
+- migration: `npx prisma migrate dev --name "init"`
+- run sript: `npx ts-node src/script.ts`
