@@ -116,7 +116,7 @@ export const LinkDelete = extendType({
           return Error(`id ${targetId} is not exist in Link data`);
         }
 
-        return links.pop(links.indexOf(target));
+        return links.splice(links.indexOf(target), 1);
       }
     });
   }
