@@ -3,6 +3,6 @@
 
 package-lock.json
 
-/primsa/migrations/
+/primsa/migrations
 /prisma/dev.db
 /prisma/dev.db-journal

@@ -28,8 +28,8 @@ export const LinkQuery = extendType({
   definition(t) {
     t.nonNull.list.nonNull.field('feed', {
       type: 'Link',
-      resolve(parent, args, context, info) {
-        return links;
+      resolve(parent, args, context) {
+        return context.prisma.link.findMany();
       }
     });
   }
@@ -57,7 +57,14 @@ export const LinkMutation = extendType({
 
         links.push(link);
 
-        return link;
+        const newLink = context.prisma.link.create({
+          data: {
+            description,
+            url
+          }
+        });
+
+        return newLink;
       }
     });
   }
