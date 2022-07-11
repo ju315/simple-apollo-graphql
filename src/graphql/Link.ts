@@ -104,9 +104,7 @@ export const LinkDelete = extendType({
         id: nonNull(intArg())
       },
       resolve: (parent, { id: targetId }, context) => {
-        console.log(targetId);
         const target = links.filter((x) => x.id === targetId)[0];
-        console.log(target);
         if (!links.filter((x) => x.id === targetId).length) {
           return Error(`id ${targetId} is not exist in Link data`);
         }
