@@ -39,3 +39,4 @@
 
 - migration: `npx prisma migrate dev --name "name"`
 - run sript: `npx ts-node src/script.ts`
+- data: `npx prisma studio`
