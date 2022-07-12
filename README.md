@@ -10,6 +10,7 @@
 - `npm install @prisma/client@^3.5.0`
 - `npm install bcryptjs@~2.4.0 jsonwebtoken@~8.5.0`
 - `npm install --save-dev @types/bcryptjs@~2.4.0 @types/jsonwebtoken@~8.5.0`
+- `npm install graphql-scalars@^1.14.1`
 
 ## add tsconfig.json file
 

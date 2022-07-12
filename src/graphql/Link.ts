@@ -7,6 +7,7 @@ export const Link = objectType({
     t.nonNull.int('id');
     t.nonNull.string('description');
     t.nonNull.string('url');
+    t.nonNull.dateTime('createdAt');
     t.field('postedBy', {
       type: 'User',
       resolve: (parent, args, context) => {
@@ -34,18 +35,18 @@ export const Link = objectType({
   }
 });
 
-const links: NexusGenObjects['Link'][] = [
-  {
-    id: 1,
-    url: 'www.howtographql.com',
-    description: 'full stack tutorial for GraphQL'
-  },
-  {
-    id: 2,
-    url: 'graphql.org',
-    description: 'GraphQL official website'
-  }
-];
+// const links: NexusGenObjects['Link'][] = [
+//   {
+//     id: 1,
+//     url: 'www.howtographql.com',
+//     description: 'full stack tutorial for GraphQL'
+//   },
+//   {
+//     id: 2,
+//     url: 'graphql.org',
+//     description: 'GraphQL official website'
+//   }
+// ];
 
 export const LinkQuery = extendType({
   type: 'Query',
