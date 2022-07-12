@@ -5,8 +5,8 @@ import { context } from './context';
 
 export const server = new ApolloServer({
   schema,
-  context,
-  plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
+  context
+  // plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
 });
 
 const port = 8000;

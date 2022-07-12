@@ -58,24 +58,25 @@ export const LinkMutation = extendType({
       },
 
       resolve: (parent, args, context) => {
+        console.log(args);
         const { description, url } = args;
-        const idCount = links.length + 1;
+        const { userId } = context;
 
-        const link = {
-          id: idCount,
-          description,
-          url
-        };
-
-        links.push(link);
+        if (!userId) {
+          throw new Error('Cannot post without logging in.');
+        }
 
         const newLink = context.prisma.link.create({
           data: {
             description,
-            url
+            url,
+            postedBy: {
+              connect: {
+                id: userId
+              }
+            }
           }
         });
-
         return newLink;
       }
     });
