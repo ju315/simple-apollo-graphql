@@ -8,6 +8,8 @@
 - `npm install apollo-server graphql nexus`
 - `npm install prisma@^3.5.0 --save-dev`
 - `npm install @prisma/client@^3.5.0`
+- `npm install bcryptjs@~2.4.0 jsonwebtoken@~8.5.0`
+- `npm install --save-dev @types/bcryptjs@~2.4.0 @types/jsonwebtoken@~8.5.0`
 
 ## add tsconfig.json file
 
