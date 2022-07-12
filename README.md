@@ -35,5 +35,5 @@
 
 ## prisma command
 
-- migration: `npx prisma migrate dev --name "init"`
+- migration: `npx prisma migrate dev --name "name"`
 - run sript: `npx ts-node src/script.ts`
