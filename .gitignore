@@ -1,8 +1,10 @@
 /node_modules
 /.vscode
+.env
 
 package-lock.json
 
 /primsa/migrations
+/prisma/migrations/*
 /prisma/dev.db
 /prisma/dev.db-journal
