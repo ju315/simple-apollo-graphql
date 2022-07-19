@@ -1,4 +1,4 @@
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
+import { objectType, extendType, nonNull, stringArg, intArg, inputObjectType, enumType } from 'nexus';
 import { NexusGenObjects } from '../../nexus-typegen';
 
 export const Link = objectType({
@@ -32,6 +32,18 @@ export const Link = objectType({
           .voters();
       }
     });
+  }
+});
+
+export const Sort = enumType({
+  name: 'Sort',
+  members: ['asc', 'desc']
+});
+
+export const LinkOrderByInput = inputObjectType({
+  name: 'LinkOrderByInput',
+  definition(t) {
+    t.field('description', { type: Sort }), t.field('url', { type: Sort }), t.field('createdAt', { type: Sort });
   }
 });
 
