@@ -195,7 +195,7 @@ export const LinkDelete = extendType({
           }
         });
 
-        return true;
+        return res;
       }
     });
   }
