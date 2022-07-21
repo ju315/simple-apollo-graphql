@@ -113,23 +113,22 @@ export const LinkMutation = extendType({
       },
 
       resolve: (parent, args, context) => {
-        console.log(args);
         const { description, url } = args;
-        const { userId } = context;
+        // const { userId } = context;
 
-        if (!userId) {
-          throw new Error('Cannot post without logging in.');
-        }
+        // if (!userId) {
+        //   throw new Error('Cannot post without logging in.');
+        // }
 
         const newLink = context.prisma.link.create({
           data: {
             description,
-            url,
-            postedBy: {
-              connect: {
-                id: userId
-              }
-            }
+            url
+            // postedBy: {
+            //   connect: {
+            //     id: userId
+            //   }
+            // }
           }
         });
         return newLink;
@@ -148,7 +147,8 @@ export const LinkUpdate = extendType({
         description: stringArg(),
         url: stringArg()
       },
-      resolve: (parent, { id: targetId, description, url }, context) => {
+      resolve: async (parent, { id: targetId, description, url }, context) => {
+        const links = await context.prisma.link.findMany({});
         const linkIds = links.length + 1;
         if (linkIds < targetId) {
           return Error(`id ${targetId} is not exist in Link data`);
@@ -178,13 +178,24 @@ export const LinkDelete = extendType({
       args: {
         id: nonNull(intArg())
       },
-      resolve: (parent, { id: targetId }, context) => {
-        const target = links.filter((x) => x.id === targetId)[0];
-        if (!links.filter((x) => x.id === targetId).length) {
+      resolve: async (parent, { id: targetId }, context) => {
+        const target = await context.prisma.link.findUnique({
+          where: {
+            id: targetId
+          }
+        });
+
+        if (!target) {
           return Error(`id ${targetId} is not exist in Link data`);
         }
 
-        return links.splice(links.indexOf(target), 1);
+        const res = await context.prisma.link.delete({
+          where: {
+            id: targetId
+          }
+        });
+
+        return true;
       }
     });
   }
