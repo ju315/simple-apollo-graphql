@@ -148,23 +148,21 @@ export const LinkUpdate = extendType({
         url: stringArg()
       },
       resolve: async (parent, { id: targetId, description, url }, context) => {
-        const links = await context.prisma.link.findMany({});
-        const linkIds = links.length + 1;
-        if (linkIds < targetId) {
-          return Error(`id ${targetId} is not exist in Link data`);
-        } else if (!!links.filter((x) => x.id === targetId).length) {
-          return Error(`id ${targetId} is not exist in Link data`);
+        const links = await context.prisma.link.findUnique({ where: { id: targetId } });
+
+        if (!links) {
+          return Error('cannot find link. id is not exist!');
         }
 
-        const changeLink = {
-          id: targetId,
-          url: url || '',
-          description: description || ''
-        };
+        const updateRes = await context.prisma.link.update({
+          where: { id: targetId },
+          data: {
+            description,
+            url
+          }
+        });
 
-        links.splice(targetId - 1, 1, changeLink);
-
-        return links[targetId - 1];
+        return updateRes;
       }
     });
   }
