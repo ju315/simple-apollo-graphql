@@ -82,7 +82,8 @@ export const LinkQuery = extendType({
 
         const links = await context.prisma.link.findMany({
           where: {
-            postedById: userId
+            postedById: userId,
+            isDeleted: false
           },
           skip: args?.skip as number | undefined,
           take: args?.take as number | undefined,
@@ -190,9 +191,12 @@ export const LinkDelete = extendType({
           return Error(`id ${targetId} is not exist in Link data`);
         }
 
-        const res = await context.prisma.link.delete({
+        const res = await context.prisma.link.update({
           where: {
             id: targetId
+          },
+          data: {
+            isDeleted: true
           }
         });
 
