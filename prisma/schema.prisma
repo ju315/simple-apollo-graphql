@@ -16,7 +16,8 @@ model Link {
   url         String
   postedBy    User?     @relation(name: "PostedBy", fields: [postedById], references: [id])
   postedById  Int?
-  voters      User[]   @relation(name: "Votes")
+  voters      User[]    @relation(name: "Votes")
+  isDeleted   Boolean   @default(false)
 }
 
 model User {
@@ -26,4 +27,5 @@ model User {
   password  String
   links     Link[]    @relation(name: "PostedBy")
   votes     Link[]    @relation(name: "Votes")
+  isDeleted Boolean   @default(false)
 }
