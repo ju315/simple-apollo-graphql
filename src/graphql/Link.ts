@@ -73,6 +73,7 @@ export const LinkQuery = extendType({
         orderBy: arg({ type: list(nonNull(LinkOrderByInput)) })
       },
       async resolve(parent, args, context) {
+        const { userId } = context;
         const where = args.filter
           ? {
               OR: [{ descriptn: { contains: args.filter } }, { url: { contains: args.filter } }]
@@ -80,7 +81,9 @@ export const LinkQuery = extendType({
           : {};
 
         const links = await context.prisma.link.findMany({
-          where,
+          where: {
+            postedById: userId
+          },
           skip: args?.skip as number | undefined,
           take: args?.take as number | undefined,
           orderBy: args?.orderBy as Prisma.Enumerable<Prisma.LinkOrderByWithRelationInput> | undefined
@@ -114,21 +117,21 @@ export const LinkMutation = extendType({
 
       resolve: (parent, args, context) => {
         const { description, url } = args;
-        // const { userId } = context;
+        const { userId } = context;
 
-        // if (!userId) {
-        //   throw new Error('Cannot post without logging in.');
-        // }
+        if (!userId) {
+          throw new Error('Cannot post without logging in.');
+        }
 
         const newLink = context.prisma.link.create({
           data: {
             description,
-            url
-            // postedBy: {
-            //   connect: {
-            //     id: userId
-            //   }
-            // }
+            url,
+            postedBy: {
+              connect: {
+                id: userId
+              }
+            }
           }
         });
         return newLink;
